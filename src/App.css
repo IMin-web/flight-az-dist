@@ -1,0 +1,135 @@
+.radar{
+    display: flex;
+    justify-content: flex-start;
+    flex-direction: row;
+}
+.position{
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    position: relative;
+    height: 900px;
+    width: 900px;
+}
+.data {
+    display: flex;
+    flex-direction: column;
+}
+.data table {
+    border-collapse: collapse;
+    border: 1px solid grey;
+}
+
+.marker{
+      width: 20px;
+      height: 20px;
+      background-color: green;
+}
+.circle {
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      position: absolute;
+      border-radius: 50%;
+      z-index: 2;
+}
+.c1{
+      border-style: solid;
+      border-width: 2px;
+}
+.c2{
+      border-style: solid;
+      border-width: 1px;
+}
+.circle300 {
+    width: 900px;
+    height: 900px;
+}
+.circle250 {
+    width: 750px;
+    height: 750px;
+}
+.circle200 {
+    width: 600px;
+    height: 600px;
+}
+.circle150 {
+    width: 450px;
+    height: 450px;
+}
+.circle100 {
+    width: 300px;
+    height: 300px;
+}
+.circle50 {
+    width: 150px;
+    height: 150px;
+}  
+
+.dalnost{
+    position:absolute;
+      width:900px;
+}
+.az1{
+        border-top:1px solid rgb(0, 0, 0);
+}
+.az2{
+        border-top:1px solid rgba(0, 0, 0, 0.568);
+}
+.az3{
+        border-top:1px solid rgba(0, 0, 0, 0.205);
+}
+.dalnost10{
+      transform: rotate(100deg);
+}
+.dalnost20{
+      transform: rotate(110deg);
+}
+.dalnost30{
+      transform: rotate(120deg);
+}
+.dalnost40{
+      transform: rotate(130deg);
+}
+.dalnost50{
+      transform: rotate(140deg);
+}
+.dalnost60{
+      transform: rotate(150deg);
+}
+.dalnost70{
+      transform: rotate(160deg);
+}
+.dalnost80{
+      transform: rotate(170deg);
+}
+.dalnost90{
+      transform: rotate(180deg);
+}
+.dalnost100{
+      transform: rotate(190deg);
+}
+.dalnost110{
+      transform: rotate(200deg);
+}
+.dalnost120{
+      transform: rotate(210deg);
+}
+.dalnost130{
+      transform: rotate(220deg);
+}
+.dalnost140{
+      transform: rotate(230deg);
+}
+.dalnost150{
+      transform: rotate(240deg);
+}
+.dalnost160{
+      transform: rotate(250deg);
+}
+.dalnost170{
+      transform: rotate(260deg);
+}
+.dalnost180{
+      transform: rotate(270deg);
+}
