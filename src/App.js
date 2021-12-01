@@ -1,99 +1,94 @@
-import { useState, useEffect} from "react";
+import { useState, useEffect } from "react";
 import React from "react";
 import './App.css'
-import ReactMapGL, {Marker} from 'react-map-gl';
+import ReactMapGL, { Marker } from 'react-map-gl';
+import { ReactComponent as Airplane } from './marker.svg';
+import { d10, d50, d100, az10, az30} from "./circle";
+const qs = require('querystring')
+
 
 function App() {
-  const [base, setBase] = useState('');
+  const [data, setData] = useState('');
   const [show, setShow] = useState(false)
-  let [name, setName] = useState('')
-
   let nameInput = React.createRef()
 
   useEffect(() => {
-    if (name) {
-      fetch(`./fetch/data/${name}.json`)
-        .then(response => response.json())
-        .then(text => setBase(text))
-        .then(response => setShow(true))
+    if (nameInput.current.value) {
+      zapros();
     } else {
-      console.log('Введите номер самолета')
+      console.log('Введите номер самолета!')
     }
-  })
+  });
 
+  function zapros() {
+    let flight = nameInput.current.value;
+    const endpoint = 'https://data-live.flightradar24.com/clickhandler/'
+    const headers = {
+      'User-Agent': 'https://github.com/derhuerst/fetch-flightradar24-flights'
+    }
+    const url = endpoint + '?' + qs.stringify({ flight, version: '1.5' })
+    return fetch(url, {
+      mode: 'cors',
+      redirect: 'follow',
+      headers,
+      referrer: 'no-referrer',
+      referrerPolicy: 'no-referrer'
+    })
+      .then(res => res.json())
+      .then(res => setData(res))
+      .then(res => setShow(true))
+  }
+  console.log(az10[0].length)
   const [viewport, setViewport] = React.useState({
     latitude: 0,
     longitude: 0,
     zoom: 5.8,
     mapboxApiAccessToken: 'pk.eyJ1Ijoib3ZlcmJyYXRzayIsImEiOiJja3dqODA3ZnMxZHA4Mm9udnlmOXdxMXQwIn0.s79NCW6WTu9I94Wv7MhNDA',
   });
-
   return (
     <div>
       <div className="radar">
         <div className="position">
-        <ReactMapGL {...viewport} width="100%" height="100%" mapStyle='mapbox://styles/mapbox/streets-v11' onViewportChange={(viewport) => setViewport(viewport)}>
-          {show && <Marker latitude={base.features[0].geometry.coordinates[base.features[0].geometry.coordinates.length-1][1]} longitude={base.features[0].geometry.coordinates[base.features[0].geometry.coordinates.length-1][0]}>
-        <div className="marker"></div>
-      </Marker>}
-        
-      </ReactMapGL>
-        <div className="circle circle300 c1"/>
-        <div className="circle circle250 c2"/>
-        <div className="circle circle200 c1"/>
-        <div className="circle circle150 c2"/>
-        <div className="circle circle100 c1"/>
-        <div className="circle circle50 c2"/>
-          <div className="dalnost az1"/>
-          <div className="dalnost dalnost10 az3"/>
-          <div className="dalnost dalnost20 az3"/>
-          <div className="dalnost dalnost30 az2"/>
-          <div className="dalnost dalnost40 az3"/>
-          <div className="dalnost dalnost50 az3"/>
-          <div className="dalnost dalnost60 az2"/>
-          <div className="dalnost dalnost70 az3"/>
-          <div className="dalnost dalnost80 az3"/>
-          <div className="dalnost dalnost90 az1"/>
-          <div className="dalnost dalnost100 az3"/>
-          <div className="dalnost dalnost110 az3"/>
-          <div className="dalnost dalnost120 az2"/>
-          <div className="dalnost dalnost130 az3"/>
-          <div className="dalnost dalnost140 az3"/>
-          <div className="dalnost dalnost150 az2"/>
-          <div className="dalnost dalnost160 az3"/>
-          <div className="dalnost dalnost170 az3"/>
-          <div className="dalnost dalnost180 az1"/>
+          <ReactMapGL {...viewport} width="100%" height="100%" mapStyle='mapbox://styles/mapbox/streets-v11' onViewportChange={(viewport) => setViewport(viewport)}>
+            {show && <Marker latitude={data.trail[0].lat} longitude={data.trail[0].lng}>
+            <Airplane/>
+            </Marker>}
+          </ReactMapGL>
+          {d10[0].map(item=>(<div key={item} className="range" style={{'width': `${d10[1][item]}px`, 'height': `${d10[1][item]}px`, borderWidth: '1px'}}></div>))}
+          {d50[0].map(item=>(<div key={item} className="range" style={{'width': `${d50[1][item]}px`, 'height': `${d50[1][item]}px`, borderWidth: '2px'}}></div>))}
+          {d100[0].map(item=>(<div key={item} className="range" style={{'width': `${d100[1][item]}px`, 'height': `${d100[1][item]}px`, borderWidth: '3px'}}></div>))}
+          {az10[0].map(item=>(<div key={item} className="azimut" style={{transform: `rotate(${az10[1][item]}deg)`, borderWidth: '1px', borderTop:'1px solid rgb(124, 124, 124, 0.568)'}}></div>))}
+          {az30[0].map(item=>(<div key={item} className="azimut" style={{transform: `rotate(${az30[1][item]}deg)`, borderWidth: '1px', borderTop:'1px solid rgb(0, 0, 0)'}}></div>))}
         </div>
         <div className="data">
-        {show &&
+          {show &&
             <table>
               <thead>
                 <tr>
-                  <th colSpan="2">{base.features[0].properties.pop().number}</th>
+                  <th colSpan="2">{data.identification.number.default}</th>
                 </tr>
               </thead>
               <tbody>
                 <tr>
                   <td>Высота</td>
-                  <td>{base.features[0].properties.pop().altitude.meters}</td>
+                  <td>{(Math.round((data.trail[0].alt)/0.3048))/10}</td>
                 </tr>
                 <tr>
                   <td>Скорость</td>
-                  <td>{base.features[0].properties.pop().speed.kmh}</td>
+                  <td>{(data.trail[0].spd)*1,852}</td>
                 </tr>
                 <tr>
                   <td>Курс</td>
-                  <td>{base.features[0].properties.pop().heading}</td>
+                  <td>{data.trail[0].hd}</td>
                 </tr>
               </tbody>
             </table>
           }
-          <input ref={nameInput} defaultValue="tup8803"></input>
-          <button onClick={() => setName(nameInput.current.value.toUpperCase())}>Вывести таблицу</button>
-          </div>
+          <input ref={nameInput}></input>
+          <button onClick={zapros}>Запрос</button>
+        </div>
       </div>
     </div >
   );
 }
-
 export default App;
