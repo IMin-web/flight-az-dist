@@ -1,7 +1,12 @@
+.window {
+    display: flex;
+    justify-content: center;
+}
 .radar{
     display: flex;
-    justify-content: flex-start;
+    align-items: center;
     flex-direction: row;
+
 }
 .position{
     display: flex;
@@ -10,22 +15,29 @@
     position: relative;
     height: 900px;
     width: 900px;
+    z-index: -1;
 }
 .data {
     display: flex;
     flex-direction: column;
+    flex-wrap: wrap;
 }
 .data table {
+    font-size: 1.5rem;
     border-collapse: collapse;
     border: 1px solid grey;
 }
-
+.mapboxgl-map{
+    position: absolute;
+    z-index: -2;
+}
 .mapboxgl-marker svg{
       position: absolute;
       bottom: 1px;
       width: 30px;
       height: 30px;
       fill: red;
+      z-index: 2;
 }
 .range {
       display: flex;
@@ -33,11 +45,16 @@
       align-items: center;
       position: absolute;
       border-radius: 50%;
-      z-index: 2;
+      z-index: -1;
       border-style: solid;
 }
 
 .azimut{
+    z-index: -1;
     position:absolute;
       width:900px;
+}
+form {
+    display: flex;
+    flex-direction: column;
 }
