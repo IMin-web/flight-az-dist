@@ -1,7 +1,7 @@
 import { useState, useEffect } from "react";
 import React from "react";
 import './App.css'
-import ReactMapGL, { Marker } from 'react-map-gl';
+import ReactMapGL, { Marker} from 'react-map-gl';
 import { ReactComponent as Airplane } from './marker.svg';
 import { d10, d50, d100, az10, az30 } from "./circle";
 
@@ -13,28 +13,15 @@ function App() {
   });
 
   function locate() { //Запрос данных с FlightRadar24
-    const headers = {
-      'User-Agent': 'https://github.com/derhuerst/fetch-flightradar24-flights'
-    }
-    const url = 'https://data-live.flightradar24.com/zones/fcgi/feed.json'
+    const url = 'http://data-live.flightradar24.com/zones/fcgi/feed.js?bounds=65,58.4,57.5,68.4&adsb=1&air=1&array=1'
     return fetch(url, {
       mode: 'cors',
       redirect: 'follow',
-      headers,
       referrer: 'no-referrer',
       referrerPolicy: 'no-referrer'
     })
       .then(res => res.json())
-      .then(res => {
-        const base = []
-        for (let key in res) {
-            if ((res[key][1] > 58.4 && res[key][1] < 65) && (res[key][2] > 57.2 && res[key][2] < 68.7)){
-              base.push(res[key])
-            }
-          }
-        return base
-      }
-      )
+      .then(res =>{return res.aircraft})
       .then(res => setLocBase(res))
   }
   
@@ -44,13 +31,14 @@ function App() {
     zoom: 5.8,
     mapboxApiAccessToken: 'pk.eyJ1Ijoib3ZlcmJyYXRzayIsImEiOiJja3dqODA3ZnMxZHA4Mm9udnlmOXdxMXQwIn0.s79NCW6WTu9I94Wv7MhNDA',
   });
+
   return (
     <div className="window">
       <div className="radar">
         <div className="position">
           <ReactMapGL id="666" {...viewport} width="100%" height="100%" mapStyle='mapbox://styles/mapbox/streets-v11' onViewportChange={(viewport) => setViewport(viewport)}>
-            {locBase.map(item => (<Marker key={item} latitude={item[1]} longitude={item[2]}>
-              <Airplane />
+            {locBase.map(item => (<Marker key={item} latitude={item[2]} longitude={item[3]}>
+              <Airplane/>
             </Marker>))}
           </ReactMapGL>
           {d10[0].map(item => (<div key={item} className="range" style={{ 'width': `${d10[1][item]}px`, 'height': `${d10[1][item]}px`, borderWidth: '1px' }}></div>))}
@@ -61,27 +49,12 @@ function App() {
         </div>
         <div className="data">
           {locBase.map(item => (
-            <table key={item}>
-              <thead>
-                <tr>
-                  <th colSpan="2">{item[16]}</th>
-                </tr>
-              </thead>
-              <tbody>
-                <tr>
-                  <td>Высота</td>
-                  <td>{(Math.round((item[4]) / 0.33)) / 10}</td>
-                </tr>
-                <tr>
-                  <td>Скорость</td>
-                  <td>{Math.round((item[5]) * 1.87)}</td>
-                </tr>
-                <tr>
-                  <td>Курс</td>
-                  <td>{item[3]}</td>
-                </tr>
-              </tbody>
-            </table>
+            <div key={item}>
+                  <h1>{item[14] || 'Без названия'}</h1>
+                  <p>Высота: {(Math.round((item[5]) / 0.33)) / 10}</p>
+                  <p>Скорость: {Math.round((item[6]) * 1.87)}</p>
+                  <p>Курс: {item[4]}</p>
+            </div>
           ))}
         </div>
       </div>
