@@ -1,0 +1,16 @@
+
+.range {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    position: absolute;
+    border-radius: 50%;
+    z-index: -1;
+    border-style: solid;
+}
+
+.azimut{
+  z-index: -1;
+  position:absolute;
+    width:900px;
+}

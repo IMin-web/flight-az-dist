@@ -11,23 +11,23 @@
     width: 900px;
     z-index: -1;
 }
-.data {
+.table {
     display: grid;
     grid-template-columns: 35% 35% 35% 35%; 
 grid-template-rows: 15% 15% 15% 15% 15% 15% 15%;
 }
-.data div {
+.table div {
     border-style: solid;
     border-color: black;
     border-width: 2px;
 }
-.data div p{
+.table div p{
     text-align:justify;
     margin-top: 1px;
     margin-bottom: 1px;
     font-size: 1.5rem;
 }
-.data div h1{
+.table div h1{
     text-align: center;
     font-size: 1.5rem;
     margin-top: 1px;
@@ -46,24 +46,10 @@ grid-template-rows: 15% 15% 15% 15% 15% 15% 15%;
       width: 30px;
       height: 30px;
       fill: red;
-      z-index: 2;
-}
-.range {
-      display: flex;
-      justify-content: center;
-      align-items: center;
-      position: absolute;
-      border-radius: 50%;
       z-index: -1;
-      border-style: solid;
 }
 
-.azimut{
-    z-index: -1;
-    position:absolute;
-      width:900px;
-}
-form {
-    display: flex;
-    flex-direction: column;
+
+.mapboxgl-marker svg:hover{
+    fill: black;
 }
