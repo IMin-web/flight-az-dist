@@ -39,17 +39,29 @@ grid-template-rows: 15% 15% 15% 15% 15% 15% 15%;
     position: absolute;
     z-index: -2;
 }
+.mapboxgl-marker {
+    position: absolute;
+    /* bottom: 20px;
+    right: -13px; */
+}
+.mapboxgl-marker div {
+    position: relative;
+    bottom: 80px;
+    left: 5px;
+    font-size: 25px;
+    font-weight: 900;
+    color: rgb(255, 222, 113);
+    text-shadow: 0px 0 10px #000, 
+    0 1px 1px #000, 
+    -1px 0 1px #000, 
+    0 -1px 1px #000;
+
+}
 .mapboxgl-marker svg{
-      position: absolute;
-      bottom: 4px;
-      right: -13px;
+    position: relative;
       width: 30px;
       height: 30px;
-      fill: red;
+    bottom: 24px;
+    right: 8px;
       z-index: -1;
-}
-
-
-.mapboxgl-marker svg:hover{
-    fill: black;
 }
