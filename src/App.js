@@ -8,22 +8,21 @@ import locate from "./locate";
 
 function App() {
   const [locBase, setLocBase] = useState([])
-  const [showSelect, setShowSelect] = useState(false)
   const [clickSelect, setClickSelect] = useState()
   const defaultColor = { 'fill': 'black' }
   const selectColor = { 'fill': 'red' }
 
   function clickHandler(event) {
-    let airplaneName = event.target.innerHTML;
+    let airplaneName = event.currentTarget
+    airplaneName = airplaneName.outerText.slice(0, airplaneName.outerText.indexOf('\n'))
+    console.log(airplaneName)
     setClickSelect(airplaneName)
-    setShowSelect(true)
+    console.log(locBase)
   }
 
   useEffect(() => {
-    let result;
     locate()
-      .then(res => result = res)
-      .then(res => setLocBase(result))
+      .then(res => setLocBase(res))
   });
 
   const [viewport, setViewport] = React.useState({  //Карта
@@ -38,16 +37,16 @@ function App() {
       <div className="position">
         <ReactMapGL id="666" {...viewport} width="100%" height="100%" mapStyle='mapbox://styles/mapbox/streets-v11' onViewportChange={(viewport) => setViewport(viewport)}>
           {locBase.map(item => (<Marker key={item[0]} latitude={item[2]} longitude={item[3]}>
-            {showSelect ? <Airplane style={item[17]===clickSelect ? selectColor : defaultColor}/>: null}
-            {showSelect ? <div>{item[17] || 'Без названия'}</div>: null}
+            <Airplane style={item[17]===clickSelect ? selectColor : defaultColor}/>
+            <div>{item[17] || 'Без названия'}</div>
           </Marker>))}
         </ReactMapGL>
         <Radar />
       </div>
       <div className="table">
         {locBase.map(item => (
-          <div key={item[0]}>
-            <h1 onClickCapture={clickHandler}>{item[17] || 'Без названия'}</h1>
+          <div onClick={clickHandler} key={item[0]} className="tableElement">
+            <h1 >{item[17] || ""}</h1>
             <p>Высота: {(Math.round((item[5]) / 0.33)) / 10}</p>
             <p>Скорость: {Math.round((item[6]) * 1.87)}</p>
             <p>Курс: {item[4]}</p>
