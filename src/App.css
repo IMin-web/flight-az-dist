@@ -19,13 +19,15 @@
     justify-content: space-between;
 }
 .table div {
+    margin-bottom: 5px;
     font-size: 1vmin;
     width: 20vmin;
-    height: 13vmin;
+    height: 18vmin;
     cursor: pointer;
     border-style: solid;
-    border-color: black;
-    border-width: 2px;
+    border-color: rgb(160, 158, 158);
+    border-width: 3px;
+    background-color: rgba(255, 255, 255, 0.705);
 }
 .table div p{
     text-align:justify;
@@ -38,7 +40,6 @@
     font-size: 3vmin;
     margin-top: 1px;
     margin-bottom: 1px;
-    background-color: rgb(147, 179, 180);
 }
 .table div:hover{
     opacity: 0.8;
@@ -76,3 +77,17 @@
     right: 8px;
       z-index: -1;
 }
+
+@keyframes bounce {
+    from {
+      bottom: 24;
+    }
+    50% {
+      bottom: 10vmin;
+      animation-timing-function: ease-in;
+    }
+    to {
+      bottom: 24;
+      animation-timing-function: ease-out;
+    }
+  }
