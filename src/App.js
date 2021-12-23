@@ -10,6 +10,7 @@ import Azimut from "./Azimut";
 import {defaultColorMarker, selectColorMarker} from "./MarkerColor";
 
 function App() {
+  const [showRadar, setShowRadar] = useState(false)
   const [locBase, setLocBase] = useState([])
   const [clickSelect, setClickSelect] = useState()
   const defaultColorTable = { 'background-color': 'rgba(211, 211, 211, 0.781)' }
@@ -22,6 +23,22 @@ function App() {
     airplaneName = airplaneName.outerText.slice(0, airplaneName.outerText.indexOf('\n'));
     console.log(airplaneName);
     setClickSelect(airplaneName);
+  }
+
+  function getRadar(event){
+    event.preventDefault();
+    if(event.target.elements.lat.value && event.target.elements.lon.value){
+        let lat = event.target.elements.lat.value;
+        let lon = event.target.elements.lon.value;
+        if((lat && lon) > 0){
+          setShowRadar(true)
+        }
+        else {
+          alert('Введите положительные значения координат!')
+        }
+    } else {
+      alert('Введите обе координаты!')
+    }
   }
 
   useEffect(() => {
@@ -41,6 +58,13 @@ function App() {
   });
 
   return (
+    <>
+        <form action="" onSubmit={getRadar}>
+                    <input placeholder="Введите latitude" type="text" name="lat" id="lat" className="form" />
+                    <input placeholder="Введите longitude" type="text" name="lon" id="lon" className="form" />
+                    <button type="submit" className="btn">Ввод</button>
+                </form>
+    {showRadar ?  
     <div className="radar">
       <div className="position">
         <ReactMapGL id="666" {...viewport} width="100%" height="100%" mapStyle='mapbox://styles/mapbox/streets-v11' onViewportChange={(viewport) => setViewport(viewport)}>
@@ -64,6 +88,8 @@ function App() {
         ))}
       </div>
     </div>
+    : null}
+    </>
   );
 }
 export default App;
