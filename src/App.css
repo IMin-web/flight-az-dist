@@ -1,3 +1,7 @@
+* {
+  margin: 0;
+}
+
 .radar {
   display: -ms-grid;
   display: grid;
@@ -22,18 +26,21 @@
 }
 
 .table {
+  position: absolute;
+  right: 0;
   display: -ms-grid;
   display: grid;
   -ms-grid-columns: 1fr 1fr 1fr;
       grid-template-columns: 1fr 1fr 1fr;
-  -ms-grid-rows: (20%)[8];
-      grid-template-rows: repeat(8, 20%);
+  -ms-grid-rows: (125px)[8];
+      grid-template-rows: repeat(8, 125px);
 }
 
 .table div {
-  font-size: 1vmax;
-  width: 8.3vmax;
-  height: 8vmax;
+  margin-left: 5px;
+  font-size: 1rem;
+  width: 1fr;
+  height: 120px;
   cursor: pointer;
   background-color: rgba(255, 255, 255, 0.705);
   background: inherit;
@@ -57,7 +64,7 @@
 
 .table div h1 {
   text-align: center;
-  font-size: 1.3vmax;
+  font-size: 18px;
   margin-top: 1px;
   margin-bottom: 1px;
 }
@@ -66,7 +73,7 @@
   text-align: justify;
   margin-top: 1px;
   margin-bottom: 1px;
-  font-size: 1.1vmax;
+  font-size: 14px;
 }
 
 .mapboxgl-map {
@@ -85,7 +92,7 @@
   font-size: 2vmin;
   font-weight: 900;
   color: #ffde71;
-  text-shadow: 0px 0 10px #000,  0 1px 1px #000,  -1px 0 1px #000,  0 -1px 1px #000;
+  text-shadow: 0px 0 10px #000,  0 1px 1px #000,  -1px 0 1px #000,  0 -1px 1px #000;
 }
 
 .mapboxgl-marker svg {
@@ -95,6 +102,38 @@
   bottom: 24px;
   right: 8px;
   z-index: -1;
+}
+
+.input {
+  position: absolute;
+  display: -webkit-box;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-box-orient: vertical;
+  -webkit-box-direction: normal;
+      -ms-flex-direction: column;
+          flex-direction: column;
+  background-color: rgba(255, 255, 255, 0.705);
+  border: 1px solid rgba(43, 43, 43, 0.568);
+  overflow: hidden;
+  -webkit-box-shadow: inset 0 0 0 3000px rgba(150, 150, 150, 0.192);
+          box-shadow: inset 0 0 0 3000px rgba(150, 150, 150, 0.192);
+}
+
+.input input {
+  background-color: rgba(255, 255, 255, 0.705);
+}
+
+.input button {
+  background-color: rgba(255, 255, 255, 0.705);
+  cursor: pointer;
+}
+
+.input buttonhover {
+  -webkit-transform: translateY(5px);
+          transform: translateY(5px);
+  -webkit-transition: 1s;
+  transition: 1s;
 }
 
 @-webkit-keyframes bounce {
