@@ -43,8 +43,6 @@
         h1{
             text-align: center;
             font-size: 18px;
-            margin-top: 1px;
-            margin-bottom: 1px;
         }
         p{
             text-align:justify;
@@ -100,7 +98,6 @@
                 transition: 1s;
             }
             &active{
-
             }
         }
 }
@@ -117,4 +114,15 @@
       bottom: 24;
       animation-timing-function: ease-out;
     }
+  }
+  @media only screen and (max-width : 768px) {
+      .position{
+          display: none;
+      }
+      .table{
+          display: flex;
+          flex-wrap: wrap;
+          top: 68px;
+          left: 0;
+      }
   }
