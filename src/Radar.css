@@ -8,13 +8,21 @@
   -webkit-box-align: center;
       -ms-flex-align: center;
           align-items: center;
+}
+.range div {
   position: absolute;
   border-radius: 50%;
   z-index: -1;
-  border-style: solid;
+  border: 1px solid black;
 }
 
 .azimut {
+  z-index: -1;
+  position: absolute;
+  width: 900px;
+  left: -450px;
+}
+.azimut div{
   z-index: -1;
   position: absolute;
   width: 900px;

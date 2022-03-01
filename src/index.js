@@ -1,11 +1,11 @@
 import React from 'react';
 import ReactDOM from 'react-dom';
-import App from './App';
+import Radar24 from './Radar24';
 import 'mapbox-gl/dist/mapbox-gl.css';
 
 ReactDOM.render(
   <React.StrictMode>
-    <App />
+    <Radar24 />
   </React.StrictMode>,
     document.getElementById('root')
 );
