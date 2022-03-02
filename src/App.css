@@ -1,14 +1,22 @@
+@import url('https://fonts.googleapis.com/css2?family=Roboto:wght@300&display=swap');
 * {
   margin: 0;
 }
 h6{
   font-size: 1em;
 }
+#deckgl-wrapper{
+  z-index: 10;
+}
+#deckgl-overlay{
+  z-index: 100;
+}
 .radar24 {
   height: 100%;
   width: 100%;
   margin-top: 12vmin;
   margin-left: 6px;
+  font-family: 'Roboto', sans-serif;
 }
 .radar {
   /* height: 100%;
@@ -60,11 +68,12 @@ h6{
   border-radius: 15px;
   border: 1px solid rgba(43, 43, 43, 0.568);
   overflow: hidden;
-  color: #ffffff;
+  background-color: rgba(241, 241, 241, 0.671);
+  /* color: #818181; */
 
-  text-shadow: 0px 0 10px #000,  0 1px 1px #000,  -1px 0 1px #000,  0 -1px 1px #000;
-  -webkit-box-shadow: inset 0 0 0 3000px rgba(150, 150, 150, 0.788);
-          box-shadow: inset 0 0 0 3000px rgba(150, 150, 150, 0.767);
+  /* text-shadow: 0px 0 10px #000,  0 1px 1px #000,  -1px 0 1px #000,  0 -1px 1px #000; */
+  -webkit-box-shadow: inset 0 0 0 3000px rgba(255, 255, 255, 0.247);
+          box-shadow: inset 0 0 0 3000px rgba(255, 255, 255, 0.226);
 }
 
 .tableElement:hover {
@@ -82,8 +91,10 @@ h6{
   text-align: justify;
   margin-top: 1px;
   margin-bottom: 1px;
+  margin-left: 5px;
   font-size: 14px;
-  /* position: a; */
+  font-family: 'Roboto', sans-serif;
+  color: rgb(27, 27, 27);
   /* z-index: 100; */
 }
 .granica { 
@@ -98,20 +109,10 @@ h6{
 }
 
 .mapboxgl-marker {
-  /* position: absolute; */
-  /* background-color: red; */
+  background-color: red;
   width: 10px;
   height: 10px;
   z-index: 1;
-}
-
-.mapboxgl-marker svg {
-  background-color: red;
-  position: absolute;
-  width: 20px;
-  height: 20px;
-  z-index: 1;
-  cursor: pointer;
 }
 
 .input__radar {
@@ -226,14 +227,22 @@ input:checked + .slider:before {
   position: absolute;
   bottom: 10px;
   z-index: 1;
-  z-index: 9999;
-  position: absolute;
   /* bottom: 20px; */
   font-size: 18px;
   font-weight: 900;
   color: #ffde71;
+  cursor: pointer;
+  transition: 0.5s;
   text-shadow: 0px 0 10px #000,  0 1px 1px #000,  -1px 0 1px #000,  0 -1px 1px #000;
-
+}
+.marker__name:hover{
+  color: #b4fffb;
+  text-shadow: 0px 0 10px #000,  0 5px 5px #000,  -1px 0 5px #000,  0 -1px 5px #000;
+transition: 0.5s;
+}
+.marker__name:active{
+  transition: 0.25s;
+  bottom: 5px;
 }
 
 @-webkit-keyframes bounce {
