@@ -1,6 +1,6 @@
 import { useState, useEffect } from "react";
 import React from "react";
-import "./App.css";
+import "./Radar24.css";
 import Map, { Marker, FullscreenControl} from "react-map-gl";
 import Radar from "./Radar";
 import locate from "./locate";
@@ -71,9 +71,8 @@ function Radar24() {
   return (
     <div className="radar24">
       <ControlPanel radarON={radarON} coordinates={coordinates}></ControlPanel>
-      <div className="radar">
-        <div className="position">
-          <Map
+        <div className="radar24__position">
+          <Map classname="radar24__map"
             id="666"
             scrollZoom={false}
             doubleClickZoom={false}
@@ -88,12 +87,11 @@ function Radar24() {
             onClick={() => onMarkerClick(0)}
           >
             <MarkerRadar form={form} onMarkerClick={onMarkerClick} lat={lat} lon={lon} locBase={locBase} ></MarkerRadar>
-            <Marker  className="center" latitude={lat} longitude={lon}>
+            <Marker latitude={lat} longitude={lon}>
               {azimutOn ? <Radar/> : null}
             </Marker>
             <FullscreenControl />
           </Map>
-        </div>
       </div>
     </div>
   );

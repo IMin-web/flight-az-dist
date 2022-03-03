@@ -1,9 +1,41 @@
-@import url('https://fonts.googleapis.com/css2?family=Roboto:wght@300&display=swap');
-@import '_Radar';
+@import url("https://fonts.googleapis.com/css2?family=Roboto:wght@300&display=swap");
+.range {
+  display: -webkit-box;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-box-pack: center;
+  -ms-flex-pack: center;
+  justify-content: center;
+  -webkit-box-align: center;
+  -ms-flex-align: center;
+  align-items: center;
+}
+
+.range div {
+  position: absolute;
+  border-radius: 50%;
+  z-index: -1;
+  border: 1px solid black;
+}
+
+.azimut {
+  z-index: -1;
+  position: absolute;
+  width: 900px;
+  left: -450px;
+}
+
+.azimut div {
+  z-index: -1;
+  position: absolute;
+  width: 900px;
+}
+
 * {
   margin: 0;
 }
-h6{
+
+h6 {
   font-size: 1em;
 }
 
@@ -20,11 +52,11 @@ h6{
   display: -ms-flexbox;
   display: flex;
   -webkit-box-pack: center;
-      -ms-flex-pack: center;
-          justify-content: center;
+  -ms-flex-pack: center;
+  justify-content: center;
   -webkit-box-align: center;
-      -ms-flex-align: center;
-          align-items: center;
+  -ms-flex-align: center;
+  align-items: center;
   position: relative;
   height: 100vh;
   width: 100vw;
@@ -42,7 +74,7 @@ h6{
   z-index: 1;
 }
 
-.marker__name{ 
+.marker__name {
   position: absolute;
   bottom: 10px;
   z-index: 1;
@@ -50,15 +82,20 @@ h6{
   font-weight: 900;
   color: #ffde71;
   cursor: pointer;
+  -webkit-transition: 0.5s;
   transition: 0.5s;
   text-shadow: 0px 0 10px #000,  0 1px 1px #000,  -1px 0 1px #000,  0 -1px 1px #000;
 }
-.marker__name:hover{
+
+.marker__name:hover {
   color: #b4fffb;
   text-shadow: 0px 0 10px #000,  0 5px 5px #000,  -1px 0 5px #000,  0 -1px 5px #000;
-transition: 0.5s;
+  -webkit-transition: 0.5s;
+  transition: 0.5s;
 }
-.marker__name:active{
+
+.marker__name:active {
+  -webkit-transition: 0.25s;
   transition: 0.25s;
   bottom: 5px;
 }
@@ -75,8 +112,8 @@ transition: 0.5s;
   border: 1px solid rgba(43, 43, 43, 0.568);
   overflow: hidden;
   background-color: rgba(241, 241, 241, 0.671);
--webkit-box-shadow: inset 0 0 0 3000px rgba(255, 255, 255, 0.247);
-          box-shadow: inset 0 0 0 3000px rgba(255, 255, 255, 0.226);
+  -webkit-box-shadow: inset 0 0 0 3000px rgba(255, 255, 255, 0.247);
+  box-shadow: inset 0 0 0 3000px rgba(255, 255, 255, 0.226);
 }
 
 .marker__table:hover {
@@ -85,7 +122,7 @@ transition: 0.5s;
 
 .marker__table:active {
   -webkit-transform: translateY(3px);
-          transform: translateY(3px);
+  transform: translateY(3px);
   -webkit-transition: 0.2s;
   transition: 0.2s;
 }
@@ -97,7 +134,7 @@ transition: 0.5s;
   margin-left: 5px;
   font-size: 14px;
   font-family: 'Roboto', sans-serif;
-  color: rgb(27, 27, 27);
+  color: #1b1b1b;
 }
 
 .input__radar {
@@ -106,17 +143,17 @@ transition: 0.5s;
   display: flex;
   -webkit-box-orient: vertical;
   -webkit-box-direction: normal;
-      -ms-flex-direction: column;
-          flex-direction: column;
+  -ms-flex-direction: column;
+  flex-direction: column;
   background-color: rgba(255, 255, 255, 0.705);
   border: 1px solid rgba(43, 43, 43, 0.568);
   overflow: hidden;
   -webkit-box-shadow: inset 0 0 0 3000px rgba(150, 150, 150, 0.192);
-          box-shadow: inset 0 0 0 3000px rgba(150, 150, 150, 0.192);
+  box-shadow: inset 0 0 0 3000px rgba(150, 150, 150, 0.192);
 }
 
 .input__radar input {
-  display:block;
+  display: block;
   background-color: rgba(255, 255, 255, 0.705);
 }
 
@@ -127,19 +164,27 @@ transition: 0.5s;
 
 .input__radar buttonhover {
   -webkit-transform: translateY(5px);
-          transform: translateY(5px);
+  transform: translateY(5px);
   -webkit-transition: 1s;
   transition: 1s;
 }
 
-.control__panel{
+.control__panel {
   position: absolute;
   right: 0;
-  display:flex;
-  flex-direction: column;
-  align-items: flex-end;
+  display: -webkit-box;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-box-orient: vertical;
+  -webkit-box-direction: normal;
+      -ms-flex-direction: column;
+          flex-direction: column;
+  -webkit-box-align: end;
+      -ms-flex-align: end;
+          align-items: flex-end;
   z-index: 1;
 }
+
 .switch {
   position: relative;
   display: inline-block;
@@ -185,12 +230,12 @@ input:checked + .slider {
 }
 
 input:focus + .slider {
-  box-shadow: 0 0 1px #2196F3;
+  -webkit-box-shadow: 0 0 1px #2196F3;
+          box-shadow: 0 0 1px #2196F3;
 }
 
 input:checked + .slider:before {
   -webkit-transform: translateX(26px);
-  -ms-transform: translateX(26px);
   transform: translateX(26px);
 }
 
@@ -202,7 +247,8 @@ input:checked + .slider:before {
 .slider.round:before {
   border-radius: 50%;
 }
-.center{ 
+
+.center {
   height: 0;
   width: 0;
   z-index: -1;

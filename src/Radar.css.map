@@ -1,9 +1,0 @@
-{
-    "version": 3,
-    "mappings": "AAAA,AAAA,MAAM,CAAC;EACH,OAAO,EAAE,IAAI;EACb,eAAe,EAAE,MAAM;EACvB,WAAW,EAAE,MAAM;EACnB,QAAQ,EAAE,QAAQ;EAClB,aAAa,EAAE,GAAG;EAClB,OAAO,EAAE,EAAE;EACX,YAAY,EAAE,KAAK;CACtB;;AAED,AAAA,OAAO,CAAA;EACL,OAAO,EAAE,EAAE;EACX,QAAQ,EAAC,QAAQ;EACf,KAAK,EAAC,KAAK;CACd",
-    "sources": [
-        "Radar.scss"
-    ],
-    "names": [],
-    "file": "Radar.css"
-}

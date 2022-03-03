@@ -28,13 +28,13 @@ export default function MarkerRadar(props) {
   return (
     <>
       {locBase.map((item) => (
-              <Marker onClick={()=>tablePosition(item)} anchor="bottom"  key={item[0]} latitude={item[2]} longitude={item[3]}>
+              <Marker className="radar24__marker" onClick={()=>tablePosition(item)} anchor="bottom"  key={item[0]} latitude={item[2]} longitude={item[3]}>
                 <div onClick={(e) => props.onMarkerClick(item, e)} className="marker__name">{item[17] || "Без названия"}</div>
                  {form === item[0] ? (
                   <div
                     onClick={(e) => props.onMarkerClick(item, e)}
                     key={item[0]}
-                    className="tableElement"
+                    className="marker__table"
                     style={tablePos}
                   >
                     <p>Азимут: {Math.round(item[20])}</p>

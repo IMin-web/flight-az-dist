@@ -1,5 +1,4 @@
 import React from "react";
-import './Radar.css'
 
 export default function Radar() {
   const d = 300;
