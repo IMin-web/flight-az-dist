@@ -36,15 +36,16 @@ h6{
 }
 
 .radar24__marker {
-  background-color: red;
-  width: 10px;
-  height: 10px;
+  display: inline-block;
+  width: 20px;
+  height: 20px;
   z-index: 1;
 }
 
 .marker__name{ 
-  position: absolute;
-  bottom: 10px;
+  position: relative;
+  bottom: 30px;
+  left: 25px;
   z-index: 1;
   font-size: 18px;
   font-weight: 900;
@@ -52,15 +53,14 @@ h6{
   cursor: pointer;
   transition: 0.5s;
   text-shadow: 0px 0 10px #000,  0 1px 1px #000,  -1px 0 1px #000,  0 -1px 1px #000;
-}
-.marker__name:hover{
+  &:hover{
   color: #b4fffb;
   text-shadow: 0px 0 10px #000,  0 5px 5px #000,  -1px 0 5px #000,  0 -1px 5px #000;
-transition: 0.5s;
+  transition: 0.5s;
 }
-.marker__name:active{
+  &:active{
   transition: 0.25s;
-  bottom: 5px;
+}
 }
 
 .marker__table {
@@ -90,6 +90,17 @@ transition: 0.5s;
   transition: 0.2s;
 }
 
+.radar24__marker__svg{
+  fill:rgb(231, 82, 52);
+  cursor: pointer;
+  &:hover{
+    fill: #6b1405;
+    transition: 0.5s;
+  }
+    &:active{
+    transition: 0.25s;
+  }
+}
 .marker__table p {
   text-align: justify;
   margin-top: 1px;
@@ -104,25 +115,15 @@ transition: 0.5s;
   display: -webkit-box;
   display: -ms-flexbox;
   display: flex;
+  width: 100%;
   -webkit-box-orient: vertical;
   -webkit-box-direction: normal;
       -ms-flex-direction: column;
           flex-direction: column;
-  background-color: rgba(255, 255, 255, 0.705);
-  border: 1px solid rgba(43, 43, 43, 0.568);
   overflow: hidden;
   -webkit-box-shadow: inset 0 0 0 3000px rgba(150, 150, 150, 0.192);
           box-shadow: inset 0 0 0 3000px rgba(150, 150, 150, 0.192);
-}
 
-.input__radar input {
-  display:block;
-  background-color: rgba(255, 255, 255, 0.705);
-}
-
-.input__radar button {
-  background-color: rgba(255, 255, 255, 0.705);
-  cursor: pointer;
 }
 
 .input__radar buttonhover {
@@ -134,17 +135,47 @@ transition: 0.5s;
 
 .control__panel{
   position: absolute;
-  right: 0;
+  right: 40px;
   display:flex;
   flex-direction: column;
   align-items: flex-end;
-  z-index: 1;
+  z-index: 9999;
+  background-color:rgba(203, 203, 203, 0.61);
+  border: 1px solid black;
+    div{
+    display:flex;
+    flex-direction: column;
+    align-items: stretch;
+  }
+
 }
+.control_arrow{
+  fill:#000;
+  position: absolute;
+  z-index: 9999;
+  right: 0;
+  height:20px;
+  width: 40px;
+  transition:0.25s;
+  cursor: pointer;
+  &:hover{
+    fill: rgb(99, 99, 99);
+    transition: 0.25s;
+
+  };
+  &:active{
+    fill: rgb(184, 184, 184);
+    transition: 0.25s;
+    height: 17px;
+    width: 37px;
+  }
+}
+
 .switch {
   position: relative;
   display: inline-block;
-  width: 60px;
-  height: 34px;
+  width: 50px;
+  height: 23px;
   z-index: 1;
 }
 
@@ -171,8 +202,8 @@ transition: 0.5s;
 .slider:before {
   position: absolute;
   content: "";
-  height: 26px;
-  width: 26px;
+  height: 16px;
+  width: 16px;
   left: 4px;
   bottom: 4px;
   background-color: white;
