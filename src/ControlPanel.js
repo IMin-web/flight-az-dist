@@ -64,13 +64,13 @@ export default function ControlPanel(props) {
             className="form"
           />
           </div>
-          <button onClick={getRadar} type="submit" className="btn">
+          <button onClick={getRadar} type="submit">
             Ввод
           </button>
         </div>
         <div>
         <div>
-          <p>Азимутальный круг</p>
+          <div>Азимутальный круг</div>
         <label className="switch">
           <input
             checked={azCheck}
@@ -84,7 +84,7 @@ export default function ControlPanel(props) {
         </label>
         </div>
         <div>
-          <p>Все формуляры</p>
+          <div>Все формуляры</div>
         <label className="switch">
           <input
             checked={formCheck}
