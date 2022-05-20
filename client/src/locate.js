@@ -23,13 +23,19 @@
         return +lon+latPred;
       }
     }
-    // console.log(`http://data-live.flightradar24.com/zones/fcgi/feed.js?bounds=${one()},${two()},${three()},${four()}&adsb=1&air=1&array=1`
-    // )
-    const url = `http://data-live.flightradar24.com/zones/fcgi/feed.js?bounds=${one()},${two()},${three()},${four()}&adsb=1&air=1&array=1`
+    const data ={
+      one: one(),
+      two: two(),
+      three: three(),
+      four: four(),
+    }
+     const url = `http://45.141.77.150:8080`
       return fetch(url, {
-      redirect: 'follow',
-      referrer: 'no-referrer',
-      referrerPolicy: 'no-referrer',
+        method: 'POST',
+      body: JSON.stringify(data),
+      headers: {
+        'Content-Type': 'application/json'
+      }
     })
       .then(res => {return res.json()})
       .then(res =>{return res.aircraft})

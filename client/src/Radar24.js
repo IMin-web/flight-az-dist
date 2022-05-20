@@ -1,13 +1,23 @@
 import { useState, useEffect } from "react";
 import React from "react";
 import "./Radar24.css";
-import Map, { Marker, FullscreenControl} from "react-map-gl";
+import Map, { Marker, FullscreenControl, Layer} from "react-map-gl";
 import Radar from "./Radar";
 import locate from "./locate";
 import Dalnost from "./Dalnost";
 import Azimut from "./Azimut";
 import MarkerRadar from "./MarkerRadar";
 import ControlPanel from "./ControlPanel";
+import DeckGL from '@deck.gl/react';
+import { MapboxLayer } from "@deck.gl/mapbox";
+import { IconLayer } from "@deck.gl/layers";
+import Atlas from "./icon-atlas.png";
+import { TripsLayer } from "@deck.gl/geo-layers";
+import "mapbox-gl/dist/mapbox-gl.css";
+import {ScatterplotLayer} from '@deck.gl/layers';
+
+
+
 
 function Radar24() {
   const [locBase, setLocBase] = useState([]);
@@ -26,6 +36,7 @@ function Radar24() {
   // let granica4 = lon + 5.4;
   const [form, setForm] = useState(0);
 
+
   const onMarkerClick = (item, event) => {
     if(!allFormsOn){
     item[0] === form ? setForm(0) : setForm(item[0]);
@@ -38,14 +49,14 @@ function Radar24() {
   function coordinates(lat, lon, rad){
     setLat(+lat);
     setLon(+lon);
-    setRadius(+rad);
-    setViewport({
+    if(rad){setRadius(+rad)};
+    if(rad){setViewport({
       latitude: lat,
       longitude: lon,
       zoom: 5.8,
       mapboxApiAccessToken:
         "pk.eyJ1Ijoib3ZlcmJyYXRzayIsImEiOiJja3dqODA3ZnMxZHA4Mm9udnlmOXdxMXQwIn0.s79NCW6WTu9I94Wv7MhNDA",
-    });
+    })};
   }
 
   function radarON(e){
@@ -65,15 +76,12 @@ function Radar24() {
 
 
   useEffect(() => {
-    // let time1;
-    // let time2;
     clearTimeout(time1);
     clearTimeout(time2);
     //запрос данных с FlightRadar24 по введенным координатам
     setTime1(setTimeout(function work() {
     latPred = (+radius/(Math.cos(+lat * (Math.PI/180)) * 111.321377778) )
       lonPred = (+radius/111.134861111)
-      // console.log(lonPred)
         locate(lat, lon, latPred, lonPred)
           .then((res) => {
             res.map((item) => {
@@ -105,24 +113,25 @@ function Radar24() {
         <div className="radar24__position">
           <Map classname="radar24__map"
             id="666"
-            scrollZoom={false}
             doubleClickZoom={false}
             dragRotate={false}
-            boxZoom={false}
-            dragPan={false}
             {...viewport}
             width="100%"
             height="100%"
             mapStyle="mapbox://styles/mapbox/streets-v11"
             onViewportChange={setViewport}
             onClick={() => onMarkerClick(0)}
+            onDblClick={(event)=>{coordinates(event.lngLat[1], event.lngLat[0])}}
           >
             <MarkerRadar  allFormsOn={allFormsOn} form={form} onMarkerClick={onMarkerClick} lat={lat} lon={lon} locBase={locBase} ></MarkerRadar>
+
+      
+
             <Marker latitude={lat} longitude={lon}>
               {azimutOn ? <Radar/> : null}
             </Marker>
             <FullscreenControl />
-          </Map>
+          </Map> 
       </div>
     </div>
   );
