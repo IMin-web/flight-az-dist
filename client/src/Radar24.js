@@ -1,7 +1,7 @@
 import { useState, useEffect } from "react";
 import React from "react";
 import "./Radar24.css";
-import Map, { Marker, FullscreenControl, Layer} from "react-map-gl";
+import Map, { Marker, FullscreenControl, Layer, Source} from "react-map-gl";
 import Radar from "./Radar";
 import locate from "./locate";
 import Dalnost from "./Dalnost";
@@ -55,7 +55,7 @@ function Radar24() {
       longitude: lon,
       zoom: 5.8,
       mapboxApiAccessToken:
-        "pk.eyJ1Ijoib3ZlcmJyYXRzayIsImEiOiJja3dqODA3ZnMxZHA4Mm9udnlmOXdxMXQwIn0.s79NCW6WTu9I94Wv7MhNDA",
+        "pk.eyJ1Ijoib3ZlcmJyYXRzayIsImEiOiJjbDNlZmVmNHIwYnJvM2JwNmh5dW1iNDI3In0.ne2arVpZtSj4RSykE0hLdw",
     })};
   }
 
@@ -73,6 +73,21 @@ function Radar24() {
     }catch(e){return}
   }, []);
 
+  const geojson = {
+    type: 'FeatureCollection',
+    features: [
+      {type: 'Feature', geometry: {type: 'Point', coordinates: [61, 63]}}
+    ]
+  };
+
+  const layerStyle = {
+    id: 'point',
+    type: 'circle',
+    paint: {
+      'circle-radius': 10,
+      'circle-color': '#007cbf'
+    }
+  };
 
 
   useEffect(() => {
@@ -104,7 +119,7 @@ function Radar24() {
     longitude: lon,
     zoom: 5.8,
     mapboxApiAccessToken:
-      "pk.eyJ1Ijoib3ZlcmJyYXRzayIsImEiOiJja3dqODA3ZnMxZHA4Mm9udnlmOXdxMXQwIn0.s79NCW6WTu9I94Wv7MhNDA",
+      "pk.eyJ1Ijoib3ZlcmJyYXRzayIsImEiOiJjbDNlZmVmNHIwYnJvM2JwNmh5dW1iNDI3In0.ne2arVpZtSj4RSykE0hLdw",
   });
 
   return (
@@ -128,7 +143,12 @@ function Radar24() {
       
 
             <Marker latitude={lat} longitude={lon}>
-              {azimutOn ? <Radar/> : null}
+              {/* {azimutOn ? */}
+              {/* <Source id="my-data" type="geojson" data={geojson}>
+        <Layer {...layerStyle} />
+      </Source> */}
+              {/* //  <Radar/> */}
+                {/* : null} */}
             </Marker>
             <FullscreenControl />
           </Map> 
