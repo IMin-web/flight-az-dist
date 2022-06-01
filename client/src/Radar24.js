@@ -8,31 +8,29 @@ import Azimut from "./Azimut";
 import ControlPanel from "./ControlPanel";
 import "mapbox-gl/dist/mapbox-gl.css";
 import mapboxgl from "!mapbox-gl"; // eslint-disable-line import/no-webpack-loader-syntax
+import { addPopup, addMarker } from "./MarkerRadar";
 
 function Radar24() {
   mapboxgl.accessToken =
     "pk.eyJ1Ijoib3ZlcmJyYXRzayIsImEiOiJjbDNlZmVmNHIwYnJvM2JwNmh5dW1iNDI3In0.ne2arVpZtSj4RSykE0hLdw";
-  const [locBase, setLocBase] = useState([]);
-  const [lat, setLat] = useState(61.28527651284786);
-  const [lon, setLon] = useState(63.17582723137468);
-  const [radius, setRadius] = useState(300);
+  const [locBase, setLocBase] = useState([]); //Массив самолетов после запроса
+  const [lat, setLat] = useState(61.28527651284786); //Широта центра поиска
+  const [lon, setLon] = useState(63.17582723137468); // Долгота центра поиска
+  const [radius, setRadius] = useState(300); //Текущий радиус поиска
   const [azimutOn, setAzimutOn] = useState(false);
-  const [time1, setTime1] = useState();
-  const [time2, setTime2] = useState();
-  const [allFormsOn, setAllFormsOn] = useState(false);
-  const [markers, setMarkers] = useState([]);
+  const [time1, setTime1] = useState(); //Таймер 1
+  const [time2, setTime2] = useState(); //Таймер 2
+  const [markers, setMarkers] = useState([]); //Массив маркеров
+  const [popups, setPopups] = useState([]); //Массив формуляров для каждого маркера
+  const [track, setTrack] = useState([]); //Массив треков для каждого маркера
   let latPred;
   let lonPred;
-  // let granica1 = lat + 2.6;
-  // let granica2 = lon - 5.7;
-  // let granica3 = lat - 2.8;
-  // let granica4 = lon + 5.4;
-  const [form, setForm] = useState(0);
 
   const mapContainer = useRef(null);
   const map = useRef(null);
-  const [zoom, setZoom] = useState(9);
+  const [zoom, setZoom] = useState(6);
 
+  //Инициализация карты
   useEffect(() => {
     if (map.current) return; // initialize map only once
     map.current = new mapboxgl.Map({
@@ -41,43 +39,76 @@ function Radar24() {
       center: [lon, lat],
       zoom: zoom,
     });
+    map.current.doubleClickZoom.disable();
+    const marker = new mapboxgl.Marker({
+      anchor: "bottom",
+    })
+      .setLngLat([lon, lat])
+      .addTo(map.current);
+    const nav = new mapboxgl.NavigationControl();
+    map.current.addControl(nav, "top-left");
+    const scale = new mapboxgl.ScaleControl({
+      maxWidth: 80,
+      unit: "metric",
+    });
+    map.current.addControl(scale);
+    map.current.on("dblclick", (event) => {
+      console.log(markers);
+      // setMarkers([])
+      // const coordinates = event.lngLat
+      // marker.setLngLat([coordinates.lng,coordinates.lat]);
+      // setLat(coordinates.lat);
+      // setLon(coordinates.lng);
+    });
   });
 
-  const onMarkerClick = (item, event) => {
-    if (!allFormsOn) {
-      item[0] === form ? setForm(0) : setForm(item[0]);
-      try {
-        event.stopPropagation();
-      } catch (e) {
-        return;
-      }
-    } else {
-      return;
-    }
-  };
-
-  function coordinates(lat, lon, rad) {
-    setLat(+lat);
-    setLon(+lon);
-    if (rad) {
-      setRadius(+rad);
-    }
-    if (rad) {
-      setViewport({
-        latitude: lat,
-        longitude: lon,
-        zoom: 5.8,
-      });
-    }
-  }
+  // function coordinates(lat, lon, rad) {
+  //   setLat(+lat);
+  //   setLon(+lon);
+  //   if (rad) {
+  //     setRadius(+rad);
+  //   }
+  //   if (rad) {
+  //     setViewport({
+  //       latitude: lat,
+  //       longitude: lon,
+  //       zoom: 5.8,
+  //     });
+  //   }
+  // }
 
   function radarON(e) {
+    console.log(popups);
     setAzimutOn(e.target.checked);
   }
+  function clearTrack() {
+    const newTrack = {};
+    for (let prop in track) {
+      locBase.map((item) => {
+        if (item[0] === prop) {
+          newTrack[item[0]] = track[item[0]];
+        } else {
+          return;
+        }
+      });
+      if (prop in newTrack) {
+        console.log(prop);
+      } else {
+        map.current.removeLayer(`${prop}`);
+        console.log(prop);
+      }
+    }
+    setTrack(newTrack);
+  }
   function allForms(e) {
-    setAllFormsOn(e.target.checked);
+    if (e.target.checked) {
+      popups.map((item) => item.addTo(map.current));
+    } else {
+      popups.map((item) => item.remove());
+    }
   }
 
+  ///Отключение футера
   useEffect(() => {
     try {
       const footer = document.querySelector(".footer");
@@ -87,48 +118,11 @@ function Radar24() {
     }
   }, []);
 
-  function addPopup(item) {
-    return `<p>Азимут: ${Math.round(item[20])}</p>
-      <p>Дальность: ${Math.round(item[19] / 100) / 10}</p>
-      <p>Высота: ${Math.round(item[5] / 0.33) / 10}</p>
-      <p>Скорость: ${Math.round(item[6] * 1.87)}</p>
-      <p>Курс: ${item[4]}</p>`;
-  }
-
-  function addMarker(item, array) {
-    const popup = new mapboxgl.Popup({
-      offset: 25,
-    })
-      .setHTML(addPopup(item))
-      .addClassName("marker__table");
-    const airplaneCont = document.createElement("div");
-    const airplane = document.createElement("div");
-    const name = document.createElement("div");
-    airplaneCont.className = "radar24__marker__cont";
-    airplane.className = "radar24__marker";
-    airplane.id = item[0];
-    airplane.style.transform = `rotate(${item[4] - 90}deg)`;
-    airplaneCont.appendChild(airplane);
-    airplaneCont.appendChild(name);
-    name.className = "marker__name";
-    name.innerHTML = `${item[17] || "Без названия"}`;
-    const marker = new mapboxgl.Marker(airplaneCont)
-      .setLngLat([item[3], item[2]])
-      .setPopup(popup)
-      .addTo(map.current);
-    array.push(marker);
-  }
-
-  function addTrack(item) {
-    const track = document.createElement("div");
-    track.className = "radar24__track";
-    const trackPoint = new mapboxgl.Marker(track)
-      .setLngLat([item[3], item[2]])
-      .addTo(map.current);
-  }
-
+  ///Обновленние, добавление или удаление маркеров
   useEffect(() => {
+    // console.log(track)
     if (markers.length === locBase.length) {
+      //Если количество маркеров равно количеству самолетов в зоне
       locBase.map((item) => {
         markers.map((i) => {
           if (i.getElement().firstElementChild.id === item[0]) {
@@ -138,16 +132,28 @@ function Radar24() {
             }deg)`;
             const pop = i.getPopup();
             pop.setHTML(addPopup(item));
-            // addTrack(item)
+            const data = {
+              type: "Feature",
+              properties: {},
+              geometry: {
+                type: "LineString",
+                coordinates: track[item[0]],
+              },
+            };
+            if (track[item[0]]) {
+              map.current.getSource(`${item[0]}`).setData(data);
+            }
           }
         });
       });
     } else {
       const array = [...markers];
+      const arrayPopups = [...popups];
       if (locBase.length > markers.length) {
+        // Если самолет вошел в зону
         locBase.map((item) => {
           if (markers.length === 0) {
-            addMarker(item, array);
+            addMarker(map, item, array, arrayPopups, track);
           } else {
             const arr = markers.map((i) => {
               if (item[0] === i.getElement().firstElementChild.id) {
@@ -159,16 +165,19 @@ function Radar24() {
             if (arr.includes(true)) {
               return;
             } else {
-              addMarker(item, array);
+              console.log("новый маркер");
+              addMarker(map, item, array, arrayPopups, track);
             }
             return;
           }
         });
-
+        setPopups(arrayPopups);
         setMarkers(array);
         return;
       } else if (locBase.length < markers.length) {
+        //Если самолет вышел из зоны
         const array = [];
+        const arrayPopups = [];
         markers.map((i) => {
           const arr = locBase.map((item) => {
             if (item[0] === i.getElement().firstElementChild.id) {
@@ -177,54 +186,59 @@ function Radar24() {
               return false;
             }
           });
-          console.log(!arr.includes(true));
           if (!arr.includes(true)) {
+            console.log("удаление маркера");
             i.remove();
-            console.log(`delete ${i.getElement().firstElementChild.id}`);
             return;
           } else {
             array.push(i);
+            arrayPopups.push(i.getPopup());
             return;
           }
         });
         setMarkers(array);
+        setPopups(arrayPopups);
       }
       return;
     }
-    if (!map.current) return; // wait for map to initialize
+    if (!map.current) return; // ожидание инициализации карты
   }, [locBase]);
 
+  ///Запрос и обработка ответа данных по самолетам
   useEffect(() => {
     clearTimeout(time1);
     clearTimeout(time2);
     //запрос данных с FlightRadar24 по введенным координатам
     setTime1(
       setTimeout(function work() {
-        latPred = +radius / (Math.cos(+lat * (Math.PI / 180)) * 111.321377778);
-        lonPred = +radius / 111.134861111;
-        locate(lat, lon, latPred, lonPred)
+        latPred = +radius / (Math.cos(+lat * (Math.PI / 180)) * 111.321377778); //Предел поиска по широте
+        lonPred = +radius / 111.134861111; //Предел поиска по долготе
+        locate(lat, lon, latPred, lonPred) // Запрос на сервер
           .then((res) => {
             res.map((item) => {
-              item.push(Dalnost(item, lat, lon));
-              item.push(Azimut(item, lat, lon));
+              item.push(Dalnost(item, lat, lon)); //Определение дальности до самолета
+              item.push(Azimut(item, lat, lon)); //Определение азимута до самолета
+              let trackArray = { ...track }; //Добавление координат для трека
+              if (trackArray[item[0]]) {
+                trackArray[item[0]].push([item[3], item[2]]);
+              } else {
+                trackArray[item[0]] = [];
+              }
+              const result = Object.assign(track, trackArray);
+              setTrack(result);
             });
             return res;
           })
           //добавление в массив результатов азимута самолета
-          .then((res) => setLocBase(res))
+          .then((res) => {
+            setLocBase(res);
+          })
           .then((res) => setTime2(setTimeout(work, 1000)))
           .catch((err) => console.log(err));
         // });
       }, 1000)
     );
   }, [lat, lon, radius]);
-
-  const [viewport, setViewport] = React.useState({
-    //Карта
-    latitude: lat,
-    longitude: lon,
-    zoom: 5.8,
-  });
 
   return (
     <div className="radar24">
@@ -234,17 +248,16 @@ function Radar24() {
         lat={lat}
         lon={lon}
         radius={radius}
-        coordinates={coordinates}
+        clearTrack={clearTrack}
       ></ControlPanel>
       <div className="radar24__position">
         <div
           ref={mapContainer}
           className="radar24__map"
           id="666"
-          {...viewport}
           width="100%"
           height="100%"
-          onClick={() => onMarkerClick(0)}
+          dblclick="false"
         />
       </div>
     </div>

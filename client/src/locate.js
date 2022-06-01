@@ -41,18 +41,8 @@
       .then(res =>{return res.aircraft})
       .catch(err => 
         {console.log('error locate')
-        // alert(
-        //   "Ошибка!",
-        //   "Проверьте подключение к интернету и перезагрузите приложение.",
-        //   [
-        //     {
-        //       text: "Отмена",
-        //       style: "cancel",
-        //     },
-        //     { text: "Перезагрузка", onPress: () => window.location.reload()}
-        //   ,
-        //   ]
-        // )
+        // let reload = confirm("Проверьте подключение к интернету и перезагрузите приложение.")
+        // if(reload){window.location.reload()}
       }
       )
     }
