@@ -9,6 +9,7 @@ import ControlPanel from "./ControlPanel";
 import "mapbox-gl/dist/mapbox-gl.css";
 import mapboxgl from "!mapbox-gl"; // eslint-disable-line import/no-webpack-loader-syntax
 import { addPopup, addMarker } from "./MarkerRadar";
+import MapboxCircle from 'mapbox-gl-circle'
 
 function Radar24() {
   mapboxgl.accessToken =
@@ -17,7 +18,6 @@ function Radar24() {
   const [lat, setLat] = useState(61.28527651284786); //Широта центра поиска
   const [lon, setLon] = useState(63.17582723137468); // Долгота центра поиска
   const [radius, setRadius] = useState(300); //Текущий радиус поиска
-  const [azimutOn, setAzimutOn] = useState(false);
   const [time1, setTime1] = useState(); //Таймер 1
   const [time2, setTime2] = useState(); //Таймер 2
   const [markers, setMarkers] = useState([]); //Массив маркеров
@@ -52,6 +52,16 @@ function Radar24() {
       unit: "metric",
     });
     map.current.addControl(scale);
+    const center ={lat: lat, lng: lon}
+    var circle = new MapboxCircle(center, radius*1000, {
+      editable: true,
+      // fillOpacity: 0,
+      strokeWeight: 2,
+  }).addTo(map.current);
+  circle.on("radiuschanged", function(circleObj) {
+    const result = circleObj.getRadius()/1000
+    setRadius(result)
+  });
     map.current.on("dblclick", (event) => {
       console.log(markers);
       // setMarkers([])
@@ -60,27 +70,9 @@ function Radar24() {
       // setLat(coordinates.lat);
       // setLon(coordinates.lng);
     });
+    
   });
 
-  // function coordinates(lat, lon, rad) {
-  //   setLat(+lat);
-  //   setLon(+lon);
-  //   if (rad) {
-  //     setRadius(+rad);
-  //   }
-  //   if (rad) {
-  //     setViewport({
-  //       latitude: lat,
-  //       longitude: lon,
-  //       zoom: 5.8,
-  //     });
-  //   }
-  // }
-
-  function radarON(e) {
-    console.log(popups);
-    setAzimutOn(e.target.checked);
-  }
   function clearTrack() {
     const newTrack = {};
     for (let prop in track) {
@@ -92,14 +84,13 @@ function Radar24() {
         }
       });
       if (prop in newTrack) {
-        console.log(prop);
       } else {
         map.current.removeLayer(`${prop}`);
-        console.log(prop);
       }
     }
     setTrack(newTrack);
   }
+
   function allForms(e) {
     if (e.target.checked) {
       popups.map((item) => item.addTo(map.current));
@@ -244,10 +235,8 @@ function Radar24() {
     <div className="radar24">
       <ControlPanel
         allForms={allForms}
-        radarON={radarON}
         lat={lat}
         lon={lon}
-        radius={radius}
         clearTrack={clearTrack}
       ></ControlPanel>
       <div className="radar24__position">
