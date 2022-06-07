@@ -63,12 +63,11 @@ function Radar24() {
     setRadius(result)
   });
     map.current.on("dblclick", (event) => {
-      console.log(markers);
-      // setMarkers([])
-      // const coordinates = event.lngLat
-      // marker.setLngLat([coordinates.lng,coordinates.lat]);
-      // setLat(coordinates.lat);
-      // setLon(coordinates.lng);
+      const coordinates = event.lngLat
+      marker.setLngLat([coordinates.lng,coordinates.lat]);
+      setLat(coordinates.lat);
+      setLon(coordinates.lng);
+      circle.setCenter({lat: coordinates.lat, lng: coordinates.lng});
     });
     
   });
@@ -197,8 +196,12 @@ function Radar24() {
 
   ///Запрос и обработка ответа данных по самолетам
   useEffect(() => {
+    if(markers.length>0){
+      markers.map((i)=>{i.remove()})
+    }
     clearTimeout(time1);
     clearTimeout(time2);
+    setMarkers([])
     //запрос данных с FlightRadar24 по введенным координатам
     setTime1(
       setTimeout(function work() {

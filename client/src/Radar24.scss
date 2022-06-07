@@ -11,8 +11,10 @@ h6{
   height: 100%;
   width: 100%;
   margin-top: 12vmin;
-  margin-left: 6px;
   font-family: 'Roboto', sans-serif;
+  @media only screen and (max-width : 768px) {
+    margin-top: 0;
+  }
 }
 
 .radar24__position {
@@ -143,21 +145,20 @@ h6{
 
 .control__panel{
   position: absolute;
-  right: 20px;
-  top:130px;
+  margin-top:1vmin;
+ right: 0;
   display:flex;
   flex-direction: column;
-  align-items: flex-start;
+  align-items: center;
   z-index: 9999;
   background-color:rgba(203, 203, 203, 0.61);
   border: 1px solid black;
+  border-radius:20px;
     div{
     display:flex;
     flex-direction: column;
-    align-items: flex-start;
+    align-items: center;
   }
-
-
 }
 .form{
   display:block;
@@ -225,6 +226,19 @@ h6{
   transition: .4s;
 }
 
+.slider.round {
+  border-radius: 34px;
+}
+
+.slider.round:before {
+  border-radius: 50%;
+}
+.center{ 
+  height: 0;
+  width: 0;
+  z-index: -1;
+}
+
 input:checked + .slider {
   background-color: #2196F3;
 }
@@ -237,4 +251,25 @@ input:checked + .slider:before {
   -webkit-transform: translateX(26px);
   -ms-transform: translateX(26px);
   transform: translateX(26px);
+}
+
+.btn{
+  background-color:#2196F3; /* Green */
+  border: none;
+  color: white;
+  padding: 7px 12px;
+  text-align: center;
+  text-decoration: none;
+  display: inline-block;
+  font-size: 16px;
+  border-radius: 4px;
+  transition: 0.25s;
+  &:hover{
+    opacity: 0.5;
+  }
+  &:active{
+    transition: 0.25s;
+    transform: translateY(10px);
+    transform: scale(0.6);
+  }
 }
