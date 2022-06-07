@@ -1,6 +1,5 @@
 import { useState, useEffect } from "react";
 import React, { useRef } from "react";
-import "./Radar24.css";
 import Radar from "./Radar";
 import locate from "./locate";
 import Dalnost from "./Dalnost";
@@ -10,6 +9,7 @@ import "mapbox-gl/dist/mapbox-gl.css";
 import mapboxgl from "!mapbox-gl"; // eslint-disable-line import/no-webpack-loader-syntax
 import { addPopup, addMarker } from "./MarkerRadar";
 import MapboxCircle from 'mapbox-gl-circle'
+import "./Radar24.css";
 
 function Radar24() {
   mapboxgl.accessToken =

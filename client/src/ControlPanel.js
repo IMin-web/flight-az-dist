@@ -22,7 +22,7 @@ export default function ControlPanel(props) {
         <div>
           <div>Удалить треки без самолетов
           </div>
-          <button className="btn"onClick={()=>props.clearTrack()}>Delete</button>
+          <button className="btn-radar"onClick={()=>props.clearTrack()}>Delete</button>
         </div>
       </div>
 
